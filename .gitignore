@@ -1,0 +1,10 @@
+*/[Bb]in
+*/[Oo]bj
+.vs
+*.csproj
+obj
+*.[Oo]bj
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
