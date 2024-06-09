@@ -1,9 +1,20 @@
 ﻿@page "/"
+@using blazorappdemo.Layout.Componentes
+@inject IConfiguration config
 
 <PageTitle>Principal</PageTitle>
 
-<ModuleTitle title="Hola Mundo" />
+<ModuleTitle title="@HelloMessage" />
 
 Esta es una app en blazor 
 se valida que los cambios en git con ssh estan 
 bien configurados desde linux
+
+@code{
+    public string HelloMessage = "";
+
+    protected override void OnInitialized()
+    {
+        HelloMessage = config["HelloMessage"];
+    }
+}
