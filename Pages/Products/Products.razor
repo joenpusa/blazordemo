@@ -1,0 +1,48 @@
+﻿@page "/product"
+@using blazorappdemo.Layout.Componentes
+@using blazorappdemo.Services
+@using blazorappdemo.Models
+@inject IProductService productService;
+
+<PageTitle>Products</PageTitle>
+
+<ModuleTitle title="Products" />
+
+<div class="container">
+    @if(products?.Count > 0)
+    {
+        <div class="row">
+            @foreach(var p in products)
+            {
+                <div class="col-3 col-md-4 col-sm-12">
+                    <div class="card">
+                        <img class="card-img-top" src="@p.Images[0]"/>
+                        <div class="card-body">
+                            <h4>@p.Title</h4>
+                            <p>@p.Price?.ToString("C")</p>
+                            <button title="Eliminar" class="btn btn-danger btn-delete"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No hay productos en el sistema</p>
+    }
+</div>
+
+@code{
+    
+    private List<Product>? products;
+    protected override async Task OnInitializedAsync()
+    {
+        products = await GetProducts();
+    }
+
+    private async Task<List<Product>> GetProducts()
+    {
+        return await productService.Get(); 
+    }
+}

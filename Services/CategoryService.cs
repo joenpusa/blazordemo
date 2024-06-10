@@ -4,7 +4,7 @@ using blazorappdemo.Models;
 
 namespace blazorappdemo.Services;
 
-public class CategoryService
+public class CategoryService : ICategoryService
 {
     private readonly HttpClient client;
     private readonly JsonSerializerOptions options;
@@ -55,4 +55,12 @@ public class CategoryService
             throw new ApplicationException(content);
         }
     }
+}
+
+public interface ICategoryService
+{
+    Task<List<Category>?> Get();
+    Task Add(Category category);
+    Task Delete(int categoryId);
+    Task Put(Category category);
 }
