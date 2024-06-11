@@ -1,0 +1,70 @@
+@page "/product/{productId}"
+@using blazorappdemo.Layout.Componentes
+@using blazorappdemo.Services;
+@using blazorappdemo.Models;
+@inject IProductService productService
+@inject ICategoryService categoryService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Product</PageTitle>
+<ModuleTitle Title="Form Product"></ModuleTitle>
+<EditForm Model="@product" OnSubmit="@Save">
+    <div class="row">
+        <div class="col-6 mb-3">
+            <label >Title</label>
+            <InputText placeholder="" @bind-Value="@product.Title" class="form-control" required/>
+        </div>
+        <div class="col-6 mb-3">
+            <label >Price</label>
+            <InputNumber placeholder="" @bind-Value="@product.Price" class="form-control" required/>
+        </div>
+        <div class="col-12 mb-3">
+            <label >Description</label>
+            <InputTextArea placeholder="" @bind-Value="@product.Description" class="form-control" required/>
+        </div>
+        <div class="col-6 mb-3">
+            <label>Category</label>
+            <InputSelect class="form-control" @bind-Value="@product.CategoryId" required>
+                <option>Select option</option>
+                @foreach(var cate in categories)
+                {
+                    <option value="@cate.Id">@cate.Name</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="col-6 mb-3">
+            <label >Images</label>
+            <InputFile placeholder="" @bind-Value="@product.Title" class="form-control"/>
+        </div>
+        <div class="col-12">
+            <div class="d-md-flex justify-content-md-end">
+                <button title="Go Back" class="btn btn-dark me-3" @onclick="@(() => goToProducts())"><i class="bi bi-arrow-left-circle  me-3"></i> go Back</button>
+                <button title="Save product" class="btn btn-primary" type="submit"><i class="bi bi-save me-3"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code
+{
+    [Parameter] public string? productId {get;set;}
+    private Product product = new();
+    private List<Category> categories = new List<Category>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await categoryService.Get();
+    }
+
+    private async Task Save()
+    {
+        //Las imagenes son un array de string con su URL
+        product.Images = new string[1] {"https://www.levapan.com/wp-content/uploads/2015/11/Mayonesa-1000g.jpg"};
+        await productService.Add(product);
+        NavigationManager.NavigateTo("/product");
+    }
+    private async Task goToProducts()
+    {
+        NavigationManager.NavigateTo("/product");
+    }
+}

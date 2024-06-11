@@ -31,8 +31,8 @@
 
     protected override void OnInitialized()
     {
-        //currentCount = currentCountParameter != null ? int.Parse(currentCountParameter) : 0;
-        currentCount = CounterFromQuery != null ? int.Parse(CounterFromQuery) : 0;
+        currentCount = currentCountParameter != null ? int.Parse(currentCountParameter) : 0;
+        //currentCount = CounterFromQuery != null ? int.Parse(CounterFromQuery) : 0;
         logger.LogInformation("SE inicia el componente");
     }
 

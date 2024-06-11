@@ -3,15 +3,22 @@
 @using blazorappdemo.Services
 @using blazorappdemo.Models
 @inject IProductService productService;
+@inject NavigationManager NavigationManager
 
 <PageTitle>Products</PageTitle>
 
 <ModuleTitle title="Products" />
 
 <div class="container">
+    <div class="row mb-3">
+        <div class="d-md-flex justify-content-md-end">
+            <button title="New item" class="btn btn-primary" @onclick="@(() => goToFormProduct(0))"><i class="bi bi-plus-circle"></i> Add product</button>
+        </div>
+    </div>
+    
     @if(products?.Count > 0)
     {
-        <div class="row">
+        <div class="row mb-3">
             @foreach(var p in products)
             {
                 <div class="col-3 col-md-4 col-sm-12">
@@ -20,7 +27,8 @@
                         <div class="card-body">
                             <h4>@p.Title</h4>
                             <p>@p.Price?.ToString("C")</p>
-                            <button title="Eliminar" class="btn btn-danger btn-delete"><i class="bi bi-trash"></i></button>
+                            <button title="Delete item" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            <button title="Edit item" class="btn btn-secondary" @onclick="@(() => goToFormProduct(p.Id))"><i class="bi bi-pencil"></i></button>
                         </div>
                     </div>
                 </div>
@@ -29,7 +37,7 @@
     }
     else
     {
-        <p>No hay productos en el sistema</p>
+        <p>There are no products in the system.</p>
     }
 </div>
 
@@ -44,5 +52,10 @@
     private async Task<List<Product>> GetProducts()
     {
         return await productService.Get(); 
+    }
+
+    private async Task goToFormProduct(int Id)
+    {
+        NavigationManager.NavigateTo("/product/"+Id);
     }
 }
